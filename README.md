@@ -9,47 +9,53 @@ An enterprise-grade **Hybrid ML + LLM Router & Telemetry Gateway** designed to o
 ---
 
 ## System Architecture
-┌─────────────────────────────────────────┐
-                     │          User / Application             │
-                     └────────────────────┬────────────────────┘
-                                          │
-                                          ▼
-                     ┌─────────────────────────────────────────┐
-                     │       FastAPI Telemetry Gateway        │
-                     │               (main.py)                 │
-                     └──────┬──────────────────┬───────────────┘
-                            │                  │
-           ┌────────────────┴────────┐        └────────────────────────┐
-           ▼                         ▼                                 ▼
-┌──────────────────────┐  ┌──────────────────────┐          ┌──────────────────────┐
-│  Vector Semantic     │  │  Light Model Tier    │          │  Heavy Model Tier    │
-│  Cache (cache-v1)    │  │  (llama-3.1-8b)      │          │  (gpt-4o)            │
-│  Latency: ~12 ms     │  │  Latency: ~140 ms    │          │  Latency: ~140 ms    │
-│  Cost: KSh 0.0000    │  │  Cost: ~KSh 0.104    │          │  Cost: ~KSh 0.455    │
-└──────────────────────┘  └──────────────────────┘          └──────────────────────┘
-                                     │
-                                     ▼
-                     ┌─────────────────────────────────────────┐
-                     │       Streamlit Control Dashboard       │
-                     │             (dashboard.py)              │
 
-                     └─────────────────────────────────────────┘
-## Key Features
-* **Semantic Vector Caching:** Bypasses LLM inference for duplicate/similar prompts (achieving ~12ms latency at zero cost).
-* **Dynamic Tier Routing:** Routes standard queries to instant light models (`llama-3.1-8b`) and complex reasoning to heavy models (`gpt-4o`).
-* **Financial Governance (KES):** Tracks real-time API spend and cost savings avoided in local currency.
-* **Latency Benchmarking:** Real-time tracking of p50 (median) and p95 (tail) performance metrics.
-* **Proof Ledger & Audit Trail:** Detailed log of similarity scores, target models, costs, and routing rationales.
+```text
++-------------------------------------------------------------+
+|                      User / Application                     |
++------------------------------+------------------------------+
+                               |
+                               v
++-------------------------------------------------------------+
+|                FastAPI Telemetry Gateway                    |
+|                        (main.py)                            |
++--------------+---------------+--------------+---------------+
+               |               |              |
+               v               v              v
+  +------------------+  +--------------+  +------------------+
+  | Vector Semantic  |  | Light Model  |  | Heavy Model      |
+  | Cache (cache-v1) |  | (llama3.1-8b)|  | (gpt-4o)         |
+  | Latency: ~12 ms  |  | Latency:~140ms|  | Latency: ~140 ms |
+  | Cost: KSh 0.0000 |  | Cost:KSh0.104|  | Cost: KSh 0.455  |
+  +------------------+  +--------------+  +------------------+
+               |               |              |
+               +---------------+--------------+
+                               |
+                               v
++-------------------------------------------------------------+
+|                 Streamlit Control Dashboard                 |
+|                        (dashboard.py)                       |
++-------------------------------------------------------------+
+
+## Core Features
+
+- **Semantic Vector Caching:** Bypasses LLM execution for duplicate or semantically identical queries, returning responses in ~12 ms at zero cost.
+- **Dynamic Model Tier Routing:** Automatically routes routine queries to cost-effective light models (`llama-3.1-8b`) while directing complex reasoning prompts to heavy models (`gpt-4o`).
+- **Financial Governance (KES):** Tracks real-time API expenditure and total cost savings avoided directly in Kenyan Shillings.
+- **Latency Benchmarking:** Displays real-time median (p50) and tail (p95) latency distributions.
+- **Proof Ledger & Audit Trail:** Provides transparent, row-by-row tracking of similarity scores, target models, query execution costs, and routing rationales.
+
+---
 
 ## Quickstart
-Execute the single-click launcher to initialize the API gateway, run the benchmark suite, and launch the telemetry UI:
+
+Execute the single-click launcher script in Command Prompt to initialize the FastAPI backend, execute the benchmarking suite, and launch the Streamlit control dashboard:
 
 ```cmd
 run_app.bat
+Tech Stack
+Backend Gateway: FastAPI, Uvicorn, Pydantic
 
-## Tech Stack
-* **Backend Gateway: FastAPI, Uvicorn, Pydantic
+Frontend Dashboard: Streamlit, Plotly, Pandas
 
-* **Frontend Dashboard: Streamlit, Plotly, Pandas
-
-* **Automation & Orchestration: Windows Batch Scripting / Shell
+Automation & Orchestration: Windows Batch Scripting / Shell
