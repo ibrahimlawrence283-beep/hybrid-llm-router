@@ -111,6 +111,8 @@ This single command starts the FastAPI backend, seeds telemetry via the benchmar
 - API: [http://localhost:8000](http://localhost:8000)
 - Dashboard: [http://localhost:8501](http://localhost:8501)
 
+> **Note:** after `benchmark.py` finishes seeding telemetry, the dashboard needs a manual refresh (F5) to pick up the new numbers — Streamlit's `st.cache_data(ttl=1)` still requires a script rerun, it doesn't auto-poll a live tab.
+
 ## Project Structure
 
 ```
@@ -142,3 +144,33 @@ hybrid-llm-router/
 - **Latency** — p50 and p95, end to end
 - **Cost governance** — actual API spend vs. cost avoided, tracked in KES
 
+### Results from a live benchmark run (90 requests)
+
+| Metric | Value |
+|---|---|
+| Total requests | 90 |
+| Cache hit rate | **80.0%** (72 hits) |
+| Routing split | ~74% light (`llama-3.1-8b`) / ~26% heavy (`gpt-4o`) |
+| p50 latency | 0.01 ms |
+| p95 latency | 4.06 ms |
+| Actual API spend | KSh 0.1413 |
+| Cost avoided via caching | KSh 2.1000 |
+| **Effective cost reduction** | **~93.7%** vs. an all-heavy-model baseline |
+
+<img width="1240" height="588" alt="Screenshot_12-8-2026_91831_localhost" src="https://github.com/user-attachments/assets/1462ea6b-b555-48b8-bdee-9d9d216b7638" />
+<img width="1240" height="588" alt="Screenshot_12-8-2026_9185_localhost" src="https://github.com/user-attachments/assets/40370655-93d4-4029-94c8-2f8565dc5e50" />
+<img width="1240" height="588" alt="Screenshot_12-8-2026_91744_localhost" src="https://github.com/user-attachments/assets/b20aecf5-af78-4062-8043-8f8ee9c9cd4e" />
+
+
+## Roadmap
+
+- [x] Swap the length-based router for a trained complexity classifier
+- [ ] Retrain the classifier on real production traffic pulled from the Proof Ledger
+- [ ] Upgrade the classifier's features from TF-IDF to sentence embeddings for better generalization, once traffic volume justifies the added dependency
+- [ ] Persist the semantic cache (Redis/pgvector) instead of in-memory
+- [ ] Add authenticated multi-tenant cost tracking
+- [ ] Deploy behind a public URL for live demo access
+
+## License
+
+copyright Meridian Data Assurance
