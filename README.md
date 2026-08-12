@@ -157,9 +157,9 @@ hybrid-llm-router/
 | Cost avoided via caching | KSh 2.1000 |
 | **Effective cost reduction** | **~93.7%** vs. an all-heavy-model baseline |
 
-<img width="1240" height="588" alt="Screenshot_12-8-2026_91831_localhost" src="https://github.com/user-attachments/assets/1462ea6b-b555-48b8-bdee-9d9d216b7638" />
-<img width="1240" height="588" alt="Screenshot_12-8-2026_9185_localhost" src="https://github.com/user-attachments/assets/40370655-93d4-4029-94c8-2f8565dc5e50" />
-<img width="1240" height="588" alt="Screenshot_12-8-2026_91744_localhost" src="https://github.com/user-attachments/assets/b20aecf5-af78-4062-8043-8f8ee9c9cd4e" />
+<img width="1240" height="588" alt="Screenshot_12-8-2026_91744_localhost" src="https://github.com/user-attachments/assets/94b65d74-d9e3-4b83-996b-bb9676dc6f08" />
+<img width="1240" height="588" alt="Screenshot_12-8-2026_9185_localhost" src="https://github.com/user-attachments/assets/48edbfc1-f4c2-4970-b1f1-ef3e2a3b38b4" />
+<img width="1240" height="588" alt="Screenshot_12-8-2026_91831_localhost" src="https://github.com/user-attachments/assets/31d20a86-45b1-452f-898e-134293c29c43" />
 
 
 ## Roadmap
